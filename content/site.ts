@@ -15,7 +15,7 @@ export const site: SiteContent = {
   patternId: "custom-hero-compare",
 
   brand: {
-    name: "УніМеКС",
+    name: "УніМеКС Кривий Ріг",
     tagline: "Крій без формул — 7 мірок, будь-яка фігура",
     city: "Кривий Ріг",
   },
