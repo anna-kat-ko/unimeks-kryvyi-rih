@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { PillButton, Ribbon } from "@/components/ui/Ribbon";
 import FloatingLayer from "@/components/FloatingLayer";
@@ -15,12 +15,35 @@ type Status = "idle" | "loading" | "success" | "error";
 
 const REGISTRATION_ENDPOINT = "https://unimeks-registration-kryvyi-rih.provizgotocan.workers.dev";
 
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+const UTM_STORAGE_KEY = "unimeks_utm";
+
+function readStoredUtm(): Record<string, string> {
+  try {
+    return JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
 export default function FormSection() {
   const counter = site.formCounter;
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utm: Record<string, string> = {};
+    UTM_KEYS.forEach((key) => {
+      const value = params.get(key);
+      if (value) utm[key] = value.slice(0, 150);
+    });
+    if (Object.keys(utm).length > 0) {
+      sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utm));
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +52,7 @@ export default function FormSection() {
       const res = await fetch(REGISTRATION_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone }),
+        body: JSON.stringify({ name, phone, ...readStoredUtm() }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data?.ok) {
