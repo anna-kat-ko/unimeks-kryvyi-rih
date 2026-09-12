@@ -36,7 +36,7 @@ export const site: SiteContent = {
     ],
     eventDetails: {
       address: "вул. Володимира Великого (кол. Мелешкіна), 26",
-      date: "15 серпня 2026",
+      date: "20 вересня 2026",
       time: "11:00",
     },
     compare: {
@@ -145,7 +145,7 @@ export const site: SiteContent = {
 
   contacts: {
     address: "вул. Володимира Великого (кол. Мелешкіна), 26",
-    hours: "15 серпня 2026, 11:00",
+    hours: "20 вересня 2026, 11:00",
     mapEmbed:
       "https://www.google.com/maps?cid=11562108722977371012&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=uk",
     social: [
